@@ -152,7 +152,7 @@ app.put('/make-server-05624468/recipes/:id', async (c) => {
       createdAt: existingRecipe.createdAt
     };
 
-    await kv.set(key, updatedRecipe);
+    await kv.set(key, updatedRecipe)
 
     return c.json({ recipe: updatedRecipe });
   } catch (error: any) {
