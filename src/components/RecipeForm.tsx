@@ -3,7 +3,7 @@ import { X, Plus, Minus, Image as ImageIcon } from 'lucide-react';
 import type { Recipe } from '../App';
 
 interface RecipeFormProps {
-  recipe: Recipe | null;
+  recipe: Recipe | null
   onClose: () => void;
   onSubmit: (recipe: Omit<Recipe, 'id' | 'userId' | 'createdAt'>) => Promise<void>;
 }
