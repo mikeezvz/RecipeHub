@@ -31,39 +31,27 @@ export function RecipeForm({ recipe, onClose, onSubmit }: RecipeFormProps) {
     }
   }, [recipe]);
 
-  const addIngredient = () => {
-    setIngredients([...ingredients, '']);
-  };
-
-  const removeIngredient = (index: number) => {
-    setIngredients(ingredients.filter((_, i) => i !== index));
-  };
-
+  const addIngredient = () => setIngredients([...ingredients, '']);
+  const removeIngredient = (index: number) => setIngredients(ingredients.filter((_, i) => i !== index));
   const updateIngredient = (index: number, value: string) => {
     const newIngredients = [...ingredients];
     newIngredients[index] = value;
     setIngredients(newIngredients);
   };
-
   const addTag = () => {
     if (tagInput.trim() && !tags.includes(tagInput.trim())) {
       setTags([...tags, tagInput.trim()]);
       setTagInput('');
     }
   };
-
-  const removeTag = (tag: string) => {
-    setTags(tags.filter(t => t !== tag));
-  };
+  const removeTag = (tag: string) => setTags(tags.filter(t => t !== tag));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // Filter out empty ingredients
       const filteredIngredients = ingredients.filter(i => i.trim() !== '');
-
       await onSubmit({
         title,
         description,
@@ -74,69 +62,68 @@ export function RecipeForm({ recipe, onClose, onSubmit }: RecipeFormProps) {
         image: image || undefined
       });
     } catch (error) {
-      // Error is handled by parent component
+      // Fehler wird vom Parent behandelt
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full my-8 relative">
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-8 py-6 rounded-t-2xl flex items-center justify-between z-10">
-          <h2 className="text-3xl text-gray-900">
-            {recipe ? 'Rezept bearbeiten' : 'Neues Rezept erstellen'}
-          </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
-          >
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 overflow-y-auto">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col min-h-[400px]">
+
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+          <h2 className="text-2xl sm:text-3xl text-gray-900">{recipe ? 'Rezept bearbeiten' : 'Neues Rezept erstellen'}</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-8 space-y-6">
-          {/* Title */}
+        {/* Scrollbarer Content */}
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto px-4 sm:px-8 py-6 space-y-6">
+
+          {/* Titel */}
           <div>
             <label className="block mb-2 text-gray-700">Titel *</label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
               placeholder="z.B. Spaghetti Carbonara"
               required
             />
           </div>
 
-          {/* Description */}
+          {/* Beschreibung */}
           <div>
             <label className="block mb-2 text-gray-700">Beschreibung *</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none text-sm sm:text-base"
               placeholder="Kurze Beschreibung des Rezepts..."
               rows={3}
               required
             />
           </div>
 
-          {/* Calories */}
+          {/* Kalorien */}
           <div>
             <label className="block mb-2 text-gray-700">Kalorien (kcal) *</label>
             <input
               type="number"
               value={calories}
               onChange={(e) => setCalories(Number(e.target.value))}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
               placeholder="z.B. 450"
               min="0"
               required
             />
           </div>
 
-          {/* Image URL */}
+          {/* Bild URL */}
           <div>
             <label className="block mb-2 text-gray-700">Bild URL (optional)</label>
             <div className="relative">
@@ -145,7 +132,7 @@ export function RecipeForm({ recipe, onClose, onSubmit }: RecipeFormProps) {
                 type="url"
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
                 placeholder="https://example.com/image.jpg"
               />
             </div>
@@ -154,7 +141,7 @@ export function RecipeForm({ recipe, onClose, onSubmit }: RecipeFormProps) {
           {/* Tags */}
           <div>
             <label className="block mb-2 text-gray-700">Tags</label>
-            <div className="flex gap-2 mb-3">
+            <div className="flex gap-2 mb-3 flex-wrap">
               <input
                 type="text"
                 value={tagInput}
@@ -165,7 +152,7 @@ export function RecipeForm({ recipe, onClose, onSubmit }: RecipeFormProps) {
                     addTag();
                   }
                 }}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
                 placeholder="z.B. Vegan, Schnell, Gesund"
               />
               <button
@@ -181,7 +168,7 @@ export function RecipeForm({ recipe, onClose, onSubmit }: RecipeFormProps) {
                 {tags.map(tag => (
                   <span
                     key={tag}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-orange-50 to-amber-50 text-orange-700 rounded-full"
+                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-orange-50 to-amber-50 text-orange-700 rounded-full text-sm sm:text-base"
                   >
                     {tag}
                     <button
@@ -197,7 +184,7 @@ export function RecipeForm({ recipe, onClose, onSubmit }: RecipeFormProps) {
             )}
           </div>
 
-          {/* Ingredients */}
+          {/* Zutaten */}
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="text-gray-700">Zutaten *</label>
@@ -217,7 +204,7 @@ export function RecipeForm({ recipe, onClose, onSubmit }: RecipeFormProps) {
                     type="text"
                     value={ingredient}
                     onChange={(e) => updateIngredient(index, e.target.value)}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
                     placeholder={`Zutat ${index + 1}`}
                     required
                   />
@@ -235,37 +222,39 @@ export function RecipeForm({ recipe, onClose, onSubmit }: RecipeFormProps) {
             </div>
           </div>
 
-          {/* Instructions */}
+          {/* Zubereitung */}
           <div>
             <label className="block mb-2 text-gray-700">Zubereitung *</label>
             <textarea
               value={instructions}
               onChange={(e) => setInstructions(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none text-sm sm:text-base"
               placeholder="Schritt-für-Schritt Anleitung..."
               rows={8}
               required
             />
           </div>
-
-          {/* Actions */}
-          <div className="flex gap-3 pt-6 border-t border-gray-200">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-            >
-              Abbrechen
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-600 text-white rounded-lg hover:shadow-lg transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Wird gespeichert...' : recipe ? 'Aktualisieren' : 'Erstellen'}
-            </button>
-          </div>
         </form>
+
+        {/* Footer */}
+        <div className="flex gap-3 px-6 py-4 border-t border-gray-200">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+          >
+            Abbrechen
+          </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={loading}
+            className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? 'Wird gespeichert...' : recipe ? 'Aktualisieren' : 'Erstellen'}
+          </button>
+        </div>
+
       </div>
     </div>
   );

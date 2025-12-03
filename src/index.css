@@ -348,7 +348,7 @@
   }
 
   :-moz-ui-invalid {
-    box-shadow: none;
+    box-shadow: none
   }
 
   button, input:where([type="button"], [type="reset"], [type="submit"]) {

@@ -4,7 +4,7 @@ import { X, Mail, Lock, User } from 'lucide-react';
 interface AuthModalProps {
   onClose: () => void;
   onSignUp: (email: string, password: string, name: string) => Promise<void>;
-  onSignIn: (email: string, password: string) => Promise<void>;
+  onSignIn: (email: string, password: string) => Promise<void>
 }
 
 export function AuthModal({ onClose, onSignUp, onSignIn }: AuthModalProps) {
