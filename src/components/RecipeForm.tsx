@@ -11,7 +11,7 @@ interface RecipeFormProps {
 export function RecipeForm({ recipe, onClose, onSubmit }: RecipeFormProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [ingredients, setIngredients] = useState<string[]>(['']);
+  const [ingredients, setIngredients] = useState<Array<{ name: string; quantity?: string }>>([{ name: '', quantity: '' }]);
   const [instructions, setInstructions] = useState('');
   const [calories, setCalories] = useState<number>(0);
   const [tags, setTags] = useState<string[]>([]);
@@ -23,7 +23,7 @@ export function RecipeForm({ recipe, onClose, onSubmit }: RecipeFormProps) {
     if (recipe) {
       setTitle(recipe.title);
       setDescription(recipe.description);
-      setIngredients(recipe.ingredients.length > 0 ? recipe.ingredients : ['']);
+      setIngredients(recipe.ingredients.length > 0 ? recipe.ingredients : [{ name: '', quantity: '' }]);
       setInstructions(recipe.instructions);
       setCalories(recipe.calories);
       setTags(recipe.tags);
@@ -31,13 +31,14 @@ export function RecipeForm({ recipe, onClose, onSubmit }: RecipeFormProps) {
     }
   }, [recipe]);
 
-  const addIngredient = () => setIngredients([...ingredients, '']);
+  const addIngredient = () => setIngredients([...ingredients, { name: '', quantity: '' }]);
   const removeIngredient = (index: number) => setIngredients(ingredients.filter((_, i) => i !== index));
-  const updateIngredient = (index: number, value: string) => {
+  const updateIngredient = (index: number, field: 'name' | 'quantity', value: string) => {
     const newIngredients = [...ingredients];
-    newIngredients[index] = value;
+    newIngredients[index][field] = value;
     setIngredients(newIngredients);
   };
+
   const addTag = () => {
     if (tagInput.trim() && !tags.includes(tagInput.trim())) {
       setTags([...tags, tagInput.trim()]);
@@ -51,7 +52,7 @@ export function RecipeForm({ recipe, onClose, onSubmit }: RecipeFormProps) {
     setLoading(true);
 
     try {
-      const filteredIngredients = ingredients.filter(i => i.trim() !== '');
+      const filteredIngredients = ingredients.filter(i => i.name.trim() !== '');
       await onSubmit({
         title,
         description,
@@ -202,11 +203,18 @@ export function RecipeForm({ recipe, onClose, onSubmit }: RecipeFormProps) {
                 <div key={index} className="flex gap-2">
                   <input
                     type="text"
-                    value={ingredient}
-                    onChange={(e) => updateIngredient(index, e.target.value)}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm sm:text-base"
+                    value={ingredient.name}
+                    onChange={(e) => updateIngredient(index, 'name', e.target.value)}
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                     placeholder={`Zutat ${index + 1}`}
                     required
+                  />
+                  <input
+                    type="text"
+                    value={ingredient.quantity || ''}
+                    onChange={(e) => updateIngredient(index, 'quantity', e.target.value)}
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    placeholder="Menge"
                   />
                   {ingredients.length > 1 && (
                     <button

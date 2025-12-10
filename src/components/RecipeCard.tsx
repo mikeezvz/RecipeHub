@@ -152,7 +152,12 @@ export function RecipeCard({ recipe, onEdit, onDelete }: RecipeCardProps) {
                   {recipe.ingredients.map((ingredient, index) => (
                     <li key={index} className="flex items-start gap-2 text-gray-700">
                       <span className="text-orange-500 mt-1">•</span>
-                      <span>{ingredient}</span>
+                      <span>
+                        {ingredient.quantity && (
+                          <span className="font-medium"> {ingredient.quantity} </span>
+                        )}
+                        {ingredient.name}
+                      </span>
                     </li>
                   ))}
                 </ul>
