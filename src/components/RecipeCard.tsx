@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Flame, Clock, Edit2, Trash2, X } from 'lucide-react';
+import { Flame, Clock, Edit2, Trash2, X, FileDown } from 'lucide-react';
 import type { Recipe } from '../App';
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import { exportRecipeToPDF } from '../utils/pdfExport';
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -91,6 +92,16 @@ export function RecipeCard({ recipe, onEdit, onDelete }: RecipeCardProps) {
             >
               <Trash2 className="w-4 h-4" />
               <span>Löschen</span>
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                exportRecipeToPDF(recipe);
+              }}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              <FileDown className="w-4 h-4" />
+              <span>PDF</span>
             </button>
           </div>
         </div>
@@ -191,6 +202,16 @@ export function RecipeCard({ recipe, onEdit, onDelete }: RecipeCardProps) {
                 >
                   <Trash2 className="w-5 h-5" />
                   <span>Löschen</span>
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    exportRecipeToPDF(recipe);
+                  }}
+                  className="flex items-center justify-center gap-2 px-6 py-3 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <FileDown className="w-5 h-5" />
+                  <span>PDF</span>
                 </button>
               </div>
             </div>
