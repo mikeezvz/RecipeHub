@@ -1,4 +1,4 @@
-# Recipe App
+# RecipeHub
 
 Eine moderne Rezept-App mit Vite-Frontend und Supabase-Backend. Nutzer können Rezepte erstellen, durchsuchen, filtern und als PDF exportieren. Die App unterstützt Accounts mit Login/Registrierung und eine strukturierte Verwaltung von Zutaten, Tags und Nährwerten.
 
