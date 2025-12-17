@@ -17,7 +17,10 @@ export interface Recipe {
   id: string;
   title: string;
   description: string;
-  ingredients: string[];
+  ingredients: Array<{
+    name: string;
+    quantity?: string;
+  }>;
   instructions: string;
   calories: number;
   tags: string[];
