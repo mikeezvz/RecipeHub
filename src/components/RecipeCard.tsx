@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Flame, Clock, Edit2, Trash2, X, FileDown } from 'lucide-react';
 import type { Recipe } from '../App';
-import { ImageWithFallback } from './figma/ImageWithFallback';
 import { exportRecipeToPDF } from '../utils/pdfExport';
 
 interface RecipeCardProps {
