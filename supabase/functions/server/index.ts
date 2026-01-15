@@ -7,8 +7,23 @@ import * as kv from './kv_store.ts';
 const app = new Hono();
 
 // Middleware
-app.use('*', cors());
-app.use('*', logger(console.log));
+app.use('*', cors({
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'http://localhost:3000',
+      'https://recipehub-taupe.vercel.app' 
+
+    ];
+        if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 // Create Supabase client helper
 const createSupabaseClient = () => {
